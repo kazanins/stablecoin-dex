@@ -126,16 +126,21 @@ export function getPricePercentageFromPeg(price: number): string {
 
 /**
  * Get suggested ticks for market maker
- * Returns array of ticks spread around the peg
+ * Bots only place bids (buy orders) to prevent them from filling each other
+ * Users can sell into bot bids or place asks above peg
  */
 export function getMarketMakerTicks(): {
   bidTicks: number[];
   askTicks: number[];
 } {
-  // Bid ticks: -50, -30, -20, -10, -5 (below peg)
-  const bidTicks = [-50, -30, -20, -10, -5];
-  // Ask ticks: +5, +10, +20, +30, +50 (above peg)
-  const askTicks = [5, 10, 20, 30, 50];
+  // Bots only place bids (buy orders) far below peg
+  // This prevents bots from filling each other's orders
+  // Users can sell tokens to bots at these prices
+  const bidTicks = [-100, -80, -60, -40, -20];
+
+  // No ask orders from bots - only users place asks
+  // This leaves the entire ask side open for users
+  const askTicks: number[] = [];
 
   return { bidTicks, askTicks };
 }
