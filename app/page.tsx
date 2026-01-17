@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { AuthButton } from './components/AuthButton';
 import { Faucet } from './components/Faucet';
@@ -10,6 +11,19 @@ import { BotMonitor } from './components/BotMonitor';
 
 export default function Home() {
   const { isConnected } = useAccount();
+  const [currentTime, setCurrentTime] = useState<string>('--:--:--');
+
+  // Update time on client only to avoid hydration mismatch
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false }));
+    };
+
+    updateTime(); // Set initial time
+    const interval = setInterval(updateTime, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className="min-h-screen">
@@ -33,7 +47,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#8E8E93]">
-              {new Date().toLocaleTimeString('en-US', { hour12: false })}
+              {currentTime}
             </div>
             <AuthButton />
           </div>
