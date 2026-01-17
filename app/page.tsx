@@ -58,10 +58,7 @@ export default function Home() {
       <header className="border-b-2 border-[#FF9500] bg-[#0a0a0a] sticky top-0 z-50">
         <div className="w-full px-4 py-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <div className="text-[#FF9500] font-bold text-sm">STABLECOIN DEX</div>
-              <div className="text-[#00E5FF] text-xs">ALPHAУSD • BETAUSD • THETAUSD</div>
-            </div>
+            <div className="text-[#FF9500] font-bold text-sm">STABLECOIN DEX</div>
             <div className="text-[#8E8E93] text-xs">ENSHRINED EXCHANGE</div>
           </div>
         </div>
