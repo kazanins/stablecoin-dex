@@ -60,8 +60,8 @@ export function ActivityLog() {
   };
 
   return (
-    <div className="terminal-panel h-full flex flex-col">
-      <div className="terminal-header flex items-center justify-between">
+    <div className="terminal-panel h-full flex flex-col max-h-full overflow-hidden">
+      <div className="terminal-header flex items-center justify-between flex-shrink-0">
         <span>ACTIVITY LOG</span>
         {activities.length > 0 && (
           <button
@@ -73,7 +73,7 @@ export function ActivityLog() {
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className="flex-1 overflow-y-auto p-2 min-h-0">
         <div className="space-y-1">
           {activities.length === 0 ? (
             <p className="text-[10px] text-[#8E8E93] uppercase">NO ACTIVITY</p>

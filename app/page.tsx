@@ -83,25 +83,25 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-2" style={{ height: 'calc(100vh - 10rem)' }}>
             {/* Orderbook - Column 1 */}
-            <div className="xl:col-span-1">
+            <div className="xl:col-span-1 h-full">
               <Orderbook />
             </div>
 
             {/* Order Form - Column 2 */}
-            <div className="xl:col-span-1">
+            <div className="xl:col-span-1 h-full">
               <OrderForm />
             </div>
 
             {/* Balances & Bots - Column 3 */}
-            <div className="xl:col-span-1 space-y-2">
+            <div className="xl:col-span-1 h-full space-y-2 flex flex-col">
               <Faucet />
               <BotMonitor />
             </div>
 
             {/* Activity Log - Column 4 */}
-            <div className="xl:col-span-1">
+            <div className="xl:col-span-1 h-full">
               <ActivityLog />
             </div>
           </div>
