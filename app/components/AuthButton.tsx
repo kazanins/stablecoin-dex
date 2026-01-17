@@ -22,7 +22,7 @@ export function AuthButton() {
     if (!webAuthnConnector) return;
     setShowError(false);
     connect(
-      { connector: webAuthnConnector },
+      { connector: webAuthnConnector, capabilities: { type: 'sign-up' } } as any,
       {
         onError: () => setShowError(true),
       }
