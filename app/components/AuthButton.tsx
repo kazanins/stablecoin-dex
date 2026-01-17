@@ -76,7 +76,7 @@ export function AuthButton() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 items-center">
       <div className="flex gap-2">
         <button
           onClick={handleSignUp}
@@ -98,9 +98,6 @@ export function AuthButton() {
           ⚠ {error.message || 'Authentication failed. Please try again.'}
         </div>
       )}
-      <p className="text-[10px] text-[#8E8E93] max-w-md uppercase">
-        Sign up to create a new Tempo account with passkeys, or sign in with an existing passkey.
-      </p>
     </div>
   );
 }
