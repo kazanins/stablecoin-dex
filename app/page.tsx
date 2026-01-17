@@ -12,6 +12,12 @@ import { BotMonitor } from './components/BotMonitor';
 export default function Home() {
   const { isConnected } = useAccount();
   const [currentTime, setCurrentTime] = useState<string>('--:--:--');
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Update time on client only to avoid hydration mismatch
   useEffect(() => {
@@ -66,7 +72,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="w-full px-2 py-2">
-        {!isConnected ? (
+        {!mounted || !isConnected ? (
           <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] text-center max-w-4xl mx-auto terminal-panel p-8">
             <h2 className="text-3xl font-bold mb-4 text-[#FF9500]">TEMPO FX TERMINAL</h2>
             <p className="text-sm text-[#8E8E93] mb-8 max-w-2xl uppercase">
