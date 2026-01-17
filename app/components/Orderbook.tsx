@@ -59,59 +59,60 @@ export function Orderbook() {
 
   if (isLoading) {
     return (
-      <div className="border border-black p-6">
-        <h2 className="text-xl font-bold mb-4">Orderbook</h2>
-        <p className="text-gray-600">Loading orderbook...</p>
+      <div className="terminal-panel p-4">
+        <div className="terminal-header">ORDERBOOK</div>
+        <p className="text-[#8E8E93] text-xs mt-4">LOADING DATA...</p>
       </div>
     );
   }
 
   return (
-    <div className="border border-black p-4 h-full flex flex-col">
-      <h2 className="text-lg font-bold mb-3">Orderbook</h2>
+    <div className="terminal-panel h-full flex flex-col">
+      <div className="terminal-header">ORDERBOOK • ALPHAУSD/PATHUSD</div>
 
       {/* Header */}
-      <div className="grid grid-cols-3 gap-2 text-xs font-medium text-gray-600 mb-2 px-1">
-        <div className="text-left">Price</div>
-        <div className="text-right">Size</div>
-        <div className="text-right">Total</div>
+      <div className="grid grid-cols-3 gap-2 text-[10px] font-bold text-[#FF9500] px-2 py-2 border-b border-[#333333]">
+        <div className="text-left">PRICE</div>
+        <div className="text-right">SIZE</div>
+        <div className="text-right">TOTAL</div>
       </div>
 
       {/* Asks (Sell orders) - in reverse order, lowest price at bottom */}
-      <div className="mb-2">
+      <div className="flex-1 overflow-auto">
         {orderbook.asks.length === 0 ? (
-          <div className="text-xs text-gray-500 text-center py-2">No asks</div>
+          <div className="text-[10px] text-[#8E8E93] text-center py-2">NO ASKS</div>
         ) : (
-          [...orderbook.asks].reverse().slice(0, 8).map((level, index) => (
+          [...orderbook.asks].reverse().slice(0, 10).map((level, index) => (
             <div
               key={`ask-${index}`}
-              className="relative grid grid-cols-3 gap-2 text-xs py-0.5 px-1 hover:bg-red-50"
+              className="relative grid grid-cols-3 gap-2 text-[10px] py-1 px-2 hover:bg-[#333333]/30 transition-colors"
             >
               {/* Depth bar */}
               <div
-                className="absolute right-0 top-0 bottom-0 bg-red-100 -z-10"
+                className="absolute right-0 top-0 bottom-0 bg-[#FF3B30]/20 -z-10"
                 style={{
                   width: `${(Number(BigInt(level.total) / BigInt(10 ** 6)) / maxTotal) * 100}%`,
                 }}
               />
-              <div className="text-red-600 font-mono text-xs">{formatPrice(level.price)}</div>
-              <div className="text-right font-mono text-xs">{formatAmount(BigInt(level.amount), 6)}</div>
-              <div className="text-right font-mono text-xs">{formatAmount(BigInt(level.total), 6)}</div>
+              <div className="text-[#FF3B30] font-mono terminal-value">{formatPrice(level.price)}</div>
+              <div className="text-right font-mono text-[#E5E5EA] terminal-value">{formatAmount(BigInt(level.amount), 6)}</div>
+              <div className="text-right font-mono text-[#8E8E93] terminal-value">{formatAmount(BigInt(level.total), 6)}</div>
             </div>
           ))
         )}
       </div>
 
       {/* Spread */}
-      <div className="border-y border-gray-300 py-1.5 px-1 mb-2">
-        <div className="text-center text-xs">
+      <div className="border-y border-[#FF9500] py-2 px-2 bg-[#000000]">
+        <div className="text-center text-[10px]">
           {orderbook.bids.length > 0 && orderbook.asks.length > 0 ? (
-            <span className="text-gray-600">
-              <span className="font-mono font-medium">{formatPrice(orderbook.spread)}</span>
-              {' '}({((orderbook.spread / orderbook.bids[0].price) * 100).toFixed(3)}%)
-            </span>
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-[#8E8E93]">SPREAD:</span>
+              <span className="font-mono font-bold text-[#FFD60A] terminal-value">{formatPrice(orderbook.spread)}</span>
+              <span className="text-[#00E5FF]">({((orderbook.spread / orderbook.bids[0].price) * 100).toFixed(3)}%)</span>
+            </div>
           ) : (
-            <span className="text-gray-500">—</span>
+            <span className="text-[#8E8E93]">—</span>
           )}
         </div>
       </div>
@@ -119,32 +120,32 @@ export function Orderbook() {
       {/* Bids (Buy orders) - highest price at top */}
       <div className="flex-1 overflow-auto">
         {orderbook.bids.length === 0 ? (
-          <div className="text-xs text-gray-500 text-center py-2">No bids</div>
+          <div className="text-[10px] text-[#8E8E93] text-center py-2">NO BIDS</div>
         ) : (
-          orderbook.bids.slice(0, 8).map((level, index) => (
+          orderbook.bids.slice(0, 10).map((level, index) => (
             <div
               key={`bid-${index}`}
-              className="relative grid grid-cols-3 gap-2 text-xs py-0.5 px-1 hover:bg-green-50"
+              className="relative grid grid-cols-3 gap-2 text-[10px] py-1 px-2 hover:bg-[#333333]/30 transition-colors"
             >
               {/* Depth bar */}
               <div
-                className="absolute right-0 top-0 bottom-0 bg-green-100 -z-10"
+                className="absolute right-0 top-0 bottom-0 bg-[#00FF41]/20 -z-10"
                 style={{
                   width: `${(Number(BigInt(level.total) / BigInt(10 ** 6)) / maxTotal) * 100}%`,
                 }}
               />
-              <div className="text-green-600 font-mono text-xs">{formatPrice(level.price)}</div>
-              <div className="text-right font-mono text-xs">{formatAmount(BigInt(level.amount), 6)}</div>
-              <div className="text-right font-mono text-xs">{formatAmount(BigInt(level.total), 6)}</div>
+              <div className="text-[#00FF41] font-mono terminal-value">{formatPrice(level.price)}</div>
+              <div className="text-right font-mono text-[#E5E5EA] terminal-value">{formatAmount(BigInt(level.amount), 6)}</div>
+              <div className="text-right font-mono text-[#8E8E93] terminal-value">{formatAmount(BigInt(level.total), 6)}</div>
             </div>
           ))
         )}
       </div>
 
       {orderbook.bids.length === 0 && orderbook.asks.length === 0 && (
-        <div className="text-center text-gray-500 py-4">
-          <p className="text-xs mb-1">No orders</p>
-          <p className="text-xs">Start bots or place an order</p>
+        <div className="text-center text-[#8E8E93] py-4">
+          <p className="text-[10px] mb-1">NO ORDERS</p>
+          <p className="text-[10px]">START BOTS OR PLACE ORDER</p>
         </div>
       )}
     </div>

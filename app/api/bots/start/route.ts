@@ -22,9 +22,9 @@ export async function POST() {
     botManager = new BotManager();
 
     // Generate private keys for 3 bots (in production, these should be stored securely)
-    const bot1Key = process.env.BOT1_PRIVATE_KEY || generatePrivateKey();
-    const bot2Key = process.env.BOT2_PRIVATE_KEY || generatePrivateKey();
-    const bot3Key = process.env.BOT3_PRIVATE_KEY || generatePrivateKey();
+    const bot1Key = (process.env.BOT1_PRIVATE_KEY || generatePrivateKey()) as `0x${string}`;
+    const bot2Key = (process.env.BOT2_PRIVATE_KEY || generatePrivateKey()) as `0x${string}`;
+    const bot3Key = (process.env.BOT3_PRIVATE_KEY || generatePrivateKey()) as `0x${string}`;
 
     // Create bots for different pairs
     const botConfigs: Array<{ id: string; config: BotConfig }> = [
@@ -77,7 +77,7 @@ export async function POST() {
         try {
           await client.request({
             method: 'tempo_fundAddress' as any,
-            params: [state.address],
+            params: [state.address as `0x${string}`],
           });
           console.log(`Funded bot ${id} at ${state.address}`);
         } catch (error) {

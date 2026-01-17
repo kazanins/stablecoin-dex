@@ -80,7 +80,7 @@ export function OrderForm() {
     return () => clearInterval(interval);
   }, [pair]);
 
-  // Black & white confetti effect
+  // Bloomberg terminal confetti effect
   const celebrateOrder = () => {
     const duration = 2000;
     const animationEnd = Date.now() + duration;
@@ -89,7 +89,7 @@ export function OrderForm() {
       spread: 360,
       ticks: 100,
       zIndex: 0,
-      colors: ['#000000', '#FFFFFF', '#1d1d1d', '#f5f5f5']
+      colors: ['#FF9500', '#00FF41', '#00E5FF', '#FFD60A', '#FF3B30']
     };
 
     const randomInRange = (min: number, max: number) => {
@@ -341,31 +341,32 @@ export function OrderForm() {
   };
 
   return (
-    <div className="border border-black p-4 h-full flex flex-col">
-      <h2 className="text-lg font-bold mb-3">Place Order</h2>
+    <div className="terminal-panel h-full flex flex-col">
+      <div className="terminal-header">ORDER ENTRY</div>
+      <div className="p-2">
 
       {/* Helper Notice */}
-      <div className="mb-3 p-2 bg-blue-50 border border-blue-200 text-xs">
-        <div className="text-blue-800 space-y-1">
-          <p>
-            💡 {orderSide === 'buy'
-              ? `BUY ${pair.base}: You need ${pair.quote}`
-              : `SELL ${pair.base}: You need ${pair.base}`}
+      <div className="mb-3 p-2 bg-[#000000] border border-[#00E5FF] text-[10px]">
+        <div className="text-[#00E5FF] space-y-1">
+          <p className="font-bold">
+            {orderSide === 'buy'
+              ? `▲ BUY ${pair.base} WITH ${pair.quote}`
+              : `▼ SELL ${pair.base} FOR ${pair.quote}`}
           </p>
           {bestBid !== null && bestAsk !== null && (
-            <p className="font-mono">
-              Best Bid: {bestBid.toFixed(6)} | Best Ask: {bestAsk.toFixed(6)}
+            <p className="font-mono terminal-value text-[#FFD60A]">
+              BID: {bestBid.toFixed(6)} • ASK: {bestAsk.toFixed(6)}
             </p>
           )}
           {orderType === 'limit' && parseFloat(price) > 0 && (
-            <p className="text-xs">
+            <p className="text-[10px]">
               {orderSide === 'buy'
                 ? (bestAsk !== null && parseFloat(price) >= bestAsk
-                    ? `✓ Will execute immediately at ${bestAsk.toFixed(6)} or better`
-                    : `Order will wait at ${parseFloat(price).toFixed(6)}`)
+                    ? `>> IMMEDIATE EXEC @ ${bestAsk.toFixed(6)}`
+                    : `>> WAIT @ ${parseFloat(price).toFixed(6)}`)
                 : (bestBid !== null && parseFloat(price) <= bestBid
-                    ? `✓ Will execute immediately at ${bestBid.toFixed(6)} or better`
-                    : `Order will wait at ${parseFloat(price).toFixed(6)}`)}
+                    ? `>> IMMEDIATE EXEC @ ${bestBid.toFixed(6)}`
+                    : `>> WAIT @ ${parseFloat(price).toFixed(6)}`)}
             </p>
           )}
         </div>
@@ -380,7 +381,7 @@ export function OrderForm() {
             const [base, quote] = e.target.value.split('/');
             setPair({ base: base as keyof typeof STABLECOINS, quote: quote as keyof typeof STABLECOINS });
           }}
-          className="w-full px-2 py-1.5 border border-black text-sm"
+          className="w-full px-2 py-1.5 terminal-panel text-sm"
         >
           {tokenPairs.map((p) => (
             <option key={`${p.base}/${p.quote}`} value={`${p.base}/${p.quote}`}>
@@ -399,7 +400,7 @@ export function OrderForm() {
             className={`flex-1 px-2 py-1.5 text-xs font-medium ${
               orderType === type
                 ? 'bg-black text-white'
-                : 'bg-white text-black hover:bg-gray-100'
+                : 'bg-[#0a0a0a] text-[#E5E5EA] hover:bg-[#333333]100'
             }`}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -411,23 +412,23 @@ export function OrderForm() {
       <div className="flex gap-2 mb-3">
         <button
           onClick={() => setOrderSide('buy')}
-          className={`flex-1 px-3 py-2 text-sm font-medium ${
+          className={`flex-1 px-3 py-2 text-sm font-medium terminal-value ${
             orderSide === 'buy'
-              ? 'bg-green-600 text-white'
-              : 'border border-green-600 text-green-600 hover:bg-green-50'
+              ? 'bg-[#00FF41] text-black'
+              : 'border border-[#00FF41] text-[#00FF41] hover:bg-[#00FF41]/10'
           }`}
         >
-          Buy
+          BUY
         </button>
         <button
           onClick={() => setOrderSide('sell')}
-          className={`flex-1 px-3 py-2 text-sm font-medium ${
+          className={`flex-1 px-3 py-2 text-sm font-medium terminal-value ${
             orderSide === 'sell'
-              ? 'bg-red-600 text-white'
-              : 'border border-red-600 text-red-600 hover:bg-red-50'
+              ? 'bg-[#FF3B30] text-white'
+              : 'border border-[#FF3B30] text-[#FF3B30] hover:bg-[#FF3B30]/10'
           }`}
         >
-          Sell
+          SELL
         </button>
       </div>
 
@@ -441,11 +442,11 @@ export function OrderForm() {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="1.00"
-          className="w-full px-2 py-1.5 border border-black text-sm"
+          className="w-full px-2 py-1.5 terminal-panel text-sm"
           step="1"
           min="1"
         />
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-[#8E8E93] mt-0.5">
           Min: 1 token
         </p>
       </div>
@@ -459,12 +460,12 @@ export function OrderForm() {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="1.0"
-            className="w-full px-2 py-1.5 border border-black text-sm"
+            className="w-full px-2 py-1.5 terminal-panel text-sm"
             step="0.0001"
             min="0.98"
             max="1.02"
           />
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-[#8E8E93] mt-0.5">
             Tick: {priceToTick(parseFloat(price) || 1)}
           </p>
         </div>
@@ -479,12 +480,12 @@ export function OrderForm() {
             value={flipPrice}
             onChange={(e) => setFlipPrice(e.target.value)}
             placeholder="1.001"
-            className="w-full px-2 py-1.5 border border-black text-sm"
+            className="w-full px-2 py-1.5 terminal-panel text-sm"
             step="0.0001"
             min="0.98"
             max="1.02"
           />
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-[#8E8E93] mt-0.5">
             Flip: {priceToTick(parseFloat(flipPrice) || 1.001)}
           </p>
         </div>
@@ -494,24 +495,25 @@ export function OrderForm() {
       <button
         onClick={handleSubmitOrder}
         disabled={isSubmitting || !address}
-        className="w-full px-3 py-2 bg-black text-white hover:bg-gray-800 disabled:bg-gray-400 transition-colors font-medium text-sm"
+        className="w-full px-3 py-2 bg-[#FF9500] text-black hover:bg-[#FF9500]/80 disabled:bg-[#333333] disabled:text-[#8E8E93] transition-colors font-bold text-sm terminal-value uppercase"
       >
         {isSubmitting
-          ? 'Submitting...'
-          : `${orderSide === 'buy' ? 'Buy' : 'Sell'} ${pair.base}`}
+          ? 'SUBMITTING...'
+          : `${orderSide === 'buy' ? 'BUY' : 'SELL'} ${pair.base}`}
       </button>
 
       {/* Messages */}
       {error && (
-        <div className="mt-2 p-2 bg-red-50 border border-red-200 text-red-700 text-xs">
-          {error}
+        <div className="mt-2 p-2 bg-[#000000] border border-[#FF3B30] text-[#FF3B30] text-[10px] terminal-value">
+          ⚠ {error}
         </div>
       )}
       {success && (
-        <div className="mt-2 p-2 bg-green-50 border border-green-200 text-green-700 text-xs">
-          {success}
+        <div className="mt-2 p-2 bg-[#000000] border border-[#00FF41] text-[#00FF41] text-[10px] terminal-value">
+          ✓ {success}
         </div>
       )}
+      </div>
     </div>
   );
 }

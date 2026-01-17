@@ -22,7 +22,7 @@ export function AuthButton() {
     if (!webAuthnConnector) return;
     setShowError(false);
     connect(
-      { connector: webAuthnConnector, capabilities: { type: 'sign-up' } },
+      { connector: webAuthnConnector },
       {
         onError: () => setShowError(true),
       }
@@ -48,9 +48,9 @@ export function AuthButton() {
   // Show loading state during hydration
   if (!mounted) {
     return (
-      <div className="flex items-center gap-4">
-        <div className="px-4 py-2 border border-gray-300 text-gray-400">
-          <span className="text-sm">Loading...</span>
+      <div className="flex items-center gap-2">
+        <div className="px-3 py-1 border border-[#333333] text-[#8E8E93]">
+          <span className="text-[10px] terminal-value">LOADING...</span>
         </div>
       </div>
     );
@@ -58,47 +58,47 @@ export function AuthButton() {
 
   if (isConnected && address) {
     return (
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 px-4 py-2 border border-black">
-          <div className="w-2 h-2 bg-green-500 rounded-full" />
-          <span className="font-mono text-sm">
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-3 py-1 border border-[#00FF41] bg-[#000000]">
+          <div className="w-1.5 h-1.5 bg-[#00FF41] rounded-full animate-pulse" />
+          <span className="font-mono text-[10px] text-[#00FF41] terminal-value">
             {address.slice(0, 6)}...{address.slice(-4)}
           </span>
         </div>
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 border border-black hover:bg-black hover:text-white transition-colors font-medium"
+          className="px-3 py-1 border border-[#FF3B30] text-[#FF3B30] hover:bg-[#FF3B30] hover:text-white transition-colors font-bold text-[10px] terminal-value"
         >
-          Sign Out
+          SIGN OUT
         </button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-4">
+    <div className="flex flex-col gap-2">
+      <div className="flex gap-2">
         <button
           onClick={handleSignUp}
           disabled={isPending}
-          className="px-6 py-3 bg-black text-white hover:bg-gray-800 disabled:bg-gray-400 transition-colors font-medium"
+          className="px-4 py-2 bg-[#FF9500] text-black border border-[#FF9500] hover:bg-[#FF9500]/80 disabled:bg-[#333333] disabled:border-[#333333] disabled:text-[#8E8E93] transition-colors font-bold text-xs terminal-value uppercase"
         >
-          {isPending ? 'Creating account...' : 'Sign Up'}
+          {isPending ? 'CREATING...' : 'SIGN UP'}
         </button>
         <button
           onClick={handleSignIn}
           disabled={isPending}
-          className="px-6 py-3 border border-black hover:bg-black hover:text-white disabled:border-gray-400 disabled:text-gray-400 transition-colors font-medium"
+          className="px-4 py-2 border border-[#00E5FF] text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black disabled:border-[#333333] disabled:text-[#8E8E93] transition-colors font-bold text-xs terminal-value uppercase"
         >
-          {isPending ? 'Signing in...' : 'Sign In'}
+          {isPending ? 'SIGNING IN...' : 'SIGN IN'}
         </button>
       </div>
       {showError && error && (
-        <div className="text-red-600 text-sm max-w-md">
-          {error.message || 'Authentication failed. Please try again.'}
+        <div className="text-[#FF3B30] text-[10px] max-w-md terminal-value">
+          ⚠ {error.message || 'Authentication failed. Please try again.'}
         </div>
       )}
-      <p className="text-sm text-gray-600 max-w-md">
+      <p className="text-[10px] text-[#8E8E93] max-w-md uppercase">
         Sign up to create a new Tempo account with passkeys, or sign in with an existing passkey.
       </p>
     </div>

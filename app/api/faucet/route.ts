@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     // This will provide test tokens for the testnet
     const result = await client.request({
       method: 'tempo_fundAddress' as any,
-      params: [address],
+      params: [address as `0x${string}`],
     });
 
     return NextResponse.json({
