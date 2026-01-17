@@ -110,57 +110,58 @@ export function Faucet() {
   };
 
   return (
-    <div className="border border-black p-3">
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-bold">Balances</h2>
+    <div className="terminal-panel">
+      <div className="terminal-header flex items-center justify-between">
+        <span>BALANCES</span>
         <button
           onClick={fetchBalances}
-          className="text-xs text-gray-600 hover:text-black"
-          title="Refresh"
+          className="text-[10px] text-[#8E8E93] hover:text-[#00E5FF] terminal-value"
         >
-          ↻
+          ↻ REFRESH
         </button>
       </div>
 
       {/* Balances */}
-      <div className="space-y-2 mb-3">
-        {balances.length === 0 ? (
-          <p className="text-xs text-gray-600">Loading...</p>
-        ) : (
-          balances.map((token) => (
-            <div
-              key={token.symbol}
-              className="flex justify-between items-center py-1 border-b border-gray-200"
-            >
-              <span className="font-medium text-xs">{token.symbol}</span>
-              <span className="font-mono text-xs">
-                {formatAmount(token.balance, 6)}
-              </span>
-            </div>
-          ))
+      <div className="p-2">
+        <div className="space-y-1 mb-3">
+          {balances.length === 0 ? (
+            <p className="text-[10px] text-[#8E8E93]">LOADING...</p>
+          ) : (
+            balances.map((token) => (
+              <div
+                key={token.symbol}
+                className="flex justify-between items-center py-1.5 border-b border-[#333333]"
+              >
+                <span className="font-bold text-[10px] text-[#00E5FF]">{token.symbol}</span>
+                <span className="font-mono text-[10px] text-[#E5E5EA] terminal-value">
+                  {formatAmount(token.balance, 6)}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Faucet Button */}
+        <button
+          onClick={handleClaimTokens}
+          disabled={isLoading || !address}
+          className="w-full px-3 py-2 bg-[#FFD60A] text-black hover:bg-[#FFD60A]/80 disabled:bg-[#333333] disabled:text-[#8E8E93] transition-colors text-[10px] font-bold terminal-value uppercase"
+        >
+          {isLoading ? 'CLAIMING...' : '+ CLAIM TOKENS'}
+        </button>
+
+        {/* Messages */}
+        {error && (
+          <div className="mt-2 p-2 bg-[#000000] border border-[#FF3B30] text-[#FF3B30] text-[10px] terminal-value">
+            ⚠ {error}
+          </div>
+        )}
+        {success && (
+          <div className="mt-2 p-2 bg-[#000000] border border-[#00FF41] text-[#00FF41] text-[10px] terminal-value">
+            ✓ {success}
+          </div>
         )}
       </div>
-
-      {/* Faucet Button */}
-      <button
-        onClick={handleClaimTokens}
-        disabled={isLoading || !address}
-        className="w-full px-3 py-2 bg-black text-white hover:bg-gray-800 disabled:bg-gray-400 transition-colors text-xs font-medium"
-      >
-        {isLoading ? 'Claiming...' : 'Get Test Tokens'}
-      </button>
-
-      {/* Messages */}
-      {error && (
-        <div className="mt-2 p-2 bg-red-50 border border-red-200 text-red-700 text-xs">
-          {error}
-        </div>
-      )}
-      {success && (
-        <div className="mt-2 p-2 bg-green-50 border border-green-200 text-green-700 text-xs">
-          {success}
-        </div>
-      )}
     </div>
   );
 }

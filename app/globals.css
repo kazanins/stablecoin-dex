@@ -2,17 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Bloomberg Terminal Theme */
+:root {
+  --terminal-bg: #000000;
+  --terminal-bg-alt: #0a0a0a;
+  --terminal-amber: #FF9500;
+  --terminal-green: #00FF41;
+  --terminal-red: #FF3B30;
+  --terminal-cyan: #00E5FF;
+  --terminal-yellow: #FFD60A;
+  --terminal-border: #333333;
+  --terminal-text: #E5E5EA;
+  --terminal-text-dim: #999999;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Consolas', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+}
+
+/* Terminal styling */
+.terminal-panel {
+  background: var(--terminal-bg-alt);
+  border: 1px solid var(--terminal-border);
+  box-shadow: 0 0 20px rgba(255, 149, 0, 0.1);
+}
+
+.terminal-header {
+  background: linear-gradient(180deg, var(--terminal-bg) 0%, var(--terminal-bg-alt) 100%);
+  border-bottom: 2px solid var(--terminal-amber);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--terminal-amber);
+}
+
+.terminal-value {
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.terminal-flash-green {
+  animation: flash-green 0.3s ease-out;
+}
+
+.terminal-flash-red {
+  animation: flash-red 0.3s ease-out;
+}
+
+@keyframes flash-green {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(0, 255, 65, 0.2); }
+}
+
+@keyframes flash-red {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(255, 59, 48, 0.2); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-amber);
+}
+
+/* Button styling */
+button {
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  box-shadow: 0 0 15px rgba(255, 149, 0, 0.3);
+}
+
+/* Input styling */
+input, select {
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  color: var(--terminal-cyan);
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--terminal-amber);
+  box-shadow: 0 0 0 1px var(--terminal-amber);
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  color: var(--terminal-amber);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--terminal-border);
+}
+
+td {
+  border-bottom: 1px solid var(--terminal-border);
+  font-variant-numeric: tabular-nums;
 }
 
 @layer base {
   * {
-    @apply border-black;
+    @apply border-[var(--terminal-border)];
   }
 }
 
@@ -20,4 +142,17 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .terminal-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .terminal-blink {
+    animation: blink 1s step-end infinite;
+  }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }

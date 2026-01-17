@@ -28,59 +28,79 @@ export function ActivityLog() {
   const getActivityColor = (type: Activity['type']) => {
     switch (type) {
       case 'order_placed':
-        return 'text-blue-600';
+        return 'text-[#00E5FF]';
       case 'order_filled':
-        return 'text-green-600';
+        return 'text-[#00FF41]';
       case 'order_cancelled':
-        return 'text-red-600';
+        return 'text-[#FF3B30]';
       case 'swap_executed':
-        return 'text-purple-600';
+        return 'text-[#FFD60A]';
       case 'faucet_claim':
-        return 'text-gray-600';
+        return 'text-[#8E8E93]';
       default:
-        return 'text-black';
+        return 'text-[#E5E5EA]';
+    }
+  };
+
+  const getActivityIcon = (type: Activity['type']) => {
+    switch (type) {
+      case 'order_placed':
+        return '▸';
+      case 'order_filled':
+        return '✓';
+      case 'order_cancelled':
+        return '✗';
+      case 'swap_executed':
+        return '⇄';
+      case 'faucet_claim':
+        return '💧';
+      default:
+        return '•';
     }
   };
 
   return (
-    <div className="border border-black p-3 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-bold">Activity</h2>
+    <div className="terminal-panel h-full flex flex-col">
+      <div className="terminal-header flex items-center justify-between">
+        <span>ACTIVITY LOG</span>
         {activities.length > 0 && (
           <button
             onClick={handleClear}
-            className="text-xs text-gray-600 hover:text-black"
+            className="text-[10px] text-[#8E8E93] hover:text-[#FF3B30] terminal-value"
           >
-            Clear
+            ✗ CLEAR
           </button>
         )}
       </div>
 
-      <div className="space-y-1.5 flex-1 overflow-y-auto">
-        {activities.length === 0 ? (
-          <p className="text-xs text-gray-600">No activity yet</p>
-        ) : (
-          activities.map((activity) => (
-            <div
-              key={activity.id}
-              className="border-b border-gray-200 pb-1.5 last:border-0"
-            >
-              <p className={`text-xs font-mono ${getActivityColor(activity.type)}`}>
-                {formatActivity(activity)}
-              </p>
-              {activity.txHash && (
-                <a
-                  href={`${TEMPO_MODERATO.explorer}/tx/${activity.txHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-blue-600 hover:underline"
-                >
-                  View →
-                </a>
-              )}
-            </div>
-          ))
-        )}
+      <div className="flex-1 overflow-y-auto p-2">
+        <div className="space-y-1">
+          {activities.length === 0 ? (
+            <p className="text-[10px] text-[#8E8E93] uppercase">NO ACTIVITY</p>
+          ) : (
+            activities.map((activity) => (
+              <div
+                key={activity.id}
+                className="border-b border-[#333333] pb-1.5 last:border-0"
+              >
+                <p className={`text-[10px] font-mono terminal-value ${getActivityColor(activity.type)}`}>
+                  <span className="mr-1">{getActivityIcon(activity.type)}</span>
+                  {formatActivity(activity)}
+                </p>
+                {activity.txHash && (
+                  <a
+                    href={`${TEMPO_MODERATO.explorer}/tx/${activity.txHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] text-[#00E5FF] hover:text-[#FF9500] terminal-value inline-block mt-0.5"
+                  >
+                    → EXPLORER
+                  </a>
+                )}
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

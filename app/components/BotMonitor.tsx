@@ -61,57 +61,58 @@ export function BotMonitor() {
   const anyBotActive = bots.some(bot => bot.isActive);
 
   return (
-    <div className="border border-black p-3">
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-bold">Bots</h2>
+    <div className="terminal-panel">
+      <div className="terminal-header flex items-center justify-between">
+        <span>MARKET MAKERS</span>
         {!anyBotActive && (
           <button
             onClick={handleStartBots}
             disabled={isStarting}
-            className="px-2 py-1 bg-black text-white hover:bg-gray-800 disabled:bg-gray-400 transition-colors text-xs"
+            className="px-2 py-1 bg-[#00FF41] text-black hover:bg-[#00FF41]/80 disabled:bg-[#333333] disabled:text-[#8E8E93] transition-colors text-[10px] font-bold terminal-value"
           >
-            {isStarting ? '...' : 'Start'}
+            {isStarting ? '...' : '▶ START'}
           </button>
         )}
       </div>
 
-      {error && (
-        <div className="mb-2 p-2 bg-red-50 border border-red-200 text-red-700 text-xs">
-          {error}
-        </div>
-      )}
-
-      <div className="space-y-2">
-        {bots.length === 0 ? (
-          <p className="text-xs text-gray-600">No bots</p>
-        ) : (
-          bots.map((bot) => (
-            <div
-              key={bot.id}
-              className="border border-gray-300 p-2"
-            >
-              <div className="flex items-center justify-between mb-1">
-                <div className="flex items-center gap-1.5">
-                  <div
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      bot.isActive ? 'bg-green-500' : 'bg-gray-400'
-                    }`}
-                  />
-                  <span className="font-medium text-xs">{bot.pair}</span>
-                </div>
-              </div>
-
-              <div className="text-xs text-gray-600">
-                <div className="flex justify-between">
-                  <span>Orders:</span>
-                  <span className="font-mono">{bot.orderCount}</span>
-                </div>
-              </div>
-            </div>
-          ))
+      <div className="p-2">
+        {error && (
+          <div className="mb-2 p-2 bg-[#000000] border border-[#FF3B30] text-[#FF3B30] text-[10px] terminal-value">
+            ⚠ {error}
+          </div>
         )}
-      </div>
 
+        <div className="space-y-2">
+          {bots.length === 0 ? (
+            <p className="text-[10px] text-[#8E8E93] uppercase">NO BOTS ACTIVE</p>
+          ) : (
+            bots.map((bot) => (
+              <div
+                key={bot.id}
+                className="border border-[#333333] bg-[#000000] p-2 hover:border-[#FF9500] transition-colors"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-1.5">
+                    <div
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        bot.isActive ? 'bg-[#00FF41] animate-pulse' : 'bg-[#8E8E93]'
+                      }`}
+                    />
+                    <span className="font-bold text-[10px] text-[#FFD60A] terminal-value">{bot.pair}</span>
+                  </div>
+                </div>
+
+                <div className="text-[10px] text-[#8E8E93]">
+                  <div className="flex justify-between">
+                    <span>ORDERS:</span>
+                    <span className="font-mono text-[#00E5FF] terminal-value">{bot.orderCount}</span>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 }
